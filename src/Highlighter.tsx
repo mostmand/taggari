@@ -1,13 +1,11 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { ClassNameMap } from '@material-ui/styles';
-import { useState } from 'react';
-
-export enum HighlightMode {
-    Selected,
-    Normal
-}
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
+    text: {
+        marginLeft: '0.3rem',
+        marginRight: '0.3rem'
+    },
     selected: {
         color: 'teal',
         backgroundColor: 'yellow'
@@ -22,31 +20,19 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 type Props = {
     children?: React.ReactNode;
+    selected: boolean;
+    onClick: () => void;
 }
 
 export const Highlighter = (props: Props) => {
     const classes = useStyles();
-    const [selected, setSelected] = useState(false);
-    const mode = selected ? HighlightMode.Selected : HighlightMode.Normal;
-    const style = getStyle(mode, classes);
+    const style = getStyle(props.selected, classes);
 
-    const toggleSelected = () => {
-        setSelected(lastSelected => {
-            return !lastSelected;
-        });
-    };
-
-
-    return <span className={style} onClick={toggleSelected}>
+    return <span className={style} onClick={props.onClick}>
         {props.children}
     </span>
 }
 
-const getStyle = (mode: HighlightMode, classes: ClassNameMap<'normal' | 'selected'>) => {
-    switch (mode) {
-        case HighlightMode.Selected: 
-            return classes.selected;
-        case HighlightMode.Normal:
-            return classes.normal;
-    }
+const getStyle = (selected: boolean, classes: ClassNameMap<'normal' | 'selected' | 'text'>): string => {
+    return `${selected ? classes.selected : classes.normal} ${classes.text}`;
 }
