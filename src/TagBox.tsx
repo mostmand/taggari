@@ -1,6 +1,8 @@
-import { Card } from "@material-ui/core"
+import { Card, Container } from "@material-ui/core"
 import { useEffect, useState } from "react"
 import { Highlighter } from "./Highlighter"
+import { Tags } from "./Tags";
+import { TagSelector } from "./TagSelector";
 import { Word } from "./Word";
 
 export const TagBox = () => {
@@ -33,7 +35,10 @@ export const TagBox = () => {
     const highlighters = words.map((word, index) => {
         return <Highlighter key={index} selected={word.selected} onClick={() => wordClicked(index)}>{word.token}</Highlighter>
     });
-    return <Card variant='outlined'>
-        {highlighters}
-    </Card>
+    return <Container>
+        <TagSelector tags={Tags}></TagSelector>
+        <Card variant='outlined'>
+            {highlighters}
+        </Card>
+    </Container>;
 }
