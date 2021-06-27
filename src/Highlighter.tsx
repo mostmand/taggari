@@ -1,12 +1,18 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { ClassNameMap } from '@material-ui/styles';
-import { TagColors } from './TagColors';
+
+export interface HighlightColors {
+    backgroundColorDark: string;
+    textColorDark: string;
+    backgroundColorLight: string;
+    textColorLight: string;
+}
 
 interface Props {
     children?: React.ReactNode;
     selected: boolean;
-    highlight?: TagColors;
-    onClick: () => void;
+    highlight?: HighlightColors;
+    onClick?: () => void;
 }
 
 export const Highlighter = (props: Props) => {

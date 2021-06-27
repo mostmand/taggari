@@ -1,10 +1,9 @@
 import { TagColors } from "./TagColors";
 
-export class Tag {
+export class TagDefinition {
     name: string;
     tag: string;
     colors: TagColors;
-    onClick?: () => void;
 
     constructor(name: string, tag: string, colors: TagColors){
         this.name = name;

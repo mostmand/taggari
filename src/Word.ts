@@ -1,17 +1,15 @@
-const OUTSIDE_TAG = 'O';
-
 export class Word {
     token: string;
     selected: boolean;
-    tag: string;
+    tag?: string;
     
     constructor(token: string, selected?: boolean, tag?: string) {
-        if (selected && tag !== null && tag !== OUTSIDE_TAG) {
-            throw new Error(`Unselected tag cannot have any tag other than ${OUTSIDE_TAG}`);
+        if (selected === true && tag !== undefined) {
+            throw new Error(`Selected word cannot have any tag`);
         }
         this.token = token;
         this.selected = selected ?? false;
-        this.tag = tag ?? OUTSIDE_TAG;
+        this.tag = tag;
     }
 
     withSelected(selected: boolean): Word {
@@ -19,6 +17,6 @@ export class Word {
     }
 
     withTag(tag: string) {
-        return new Word(this.token, this.selected, this.tag);
+        return new Word(this.token, this.selected, tag);
     }
 }

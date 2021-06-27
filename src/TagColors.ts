@@ -1,4 +1,4 @@
-export type TagColors = {
+export interface TagColors {
     backgroundColorDark: string;
     textColorDark: string;
     backgroundColorLight: string;
