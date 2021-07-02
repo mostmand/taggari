@@ -6,6 +6,8 @@ import { Tags } from "./Tags";
 import { Tag, TagSelector } from "./TagSelector";
 import { Word } from "./Word";
 
+const WORD_DELIMITER = ' ';
+
 export const TagBox = () => {
     const tagsByName = new Map<string, TagDefinition>();
     Tags.forEach(tag => tagsByName.set(tag.name, tag));
@@ -36,7 +38,7 @@ export const TagBox = () => {
         })
     };
 
-    const tagSelectedWords = (tagName: string) => {
+    const tagSelectedWords = (tagName: string): void => {
         setWords(words => {
             var found = false;
             var done = false;
@@ -53,7 +55,7 @@ export const TagBox = () => {
                     selectedWords.push(word);
                 }
                 else if (found === true) {
-                    const newWord = new Word(selectedWords.map(w => w.token).join(' '), false, tagName);
+                    const newWord = new Word(selectedWords.map(w => w.token).join(WORD_DELIMITER), false, tagName);
                     clonedWords.push(newWord);
                     done = true;
                     clonedWords.push(word);
@@ -69,6 +71,23 @@ export const TagBox = () => {
             return clonedWords;
         });
     };
+
+    const clearWord = (index: number): void => {
+        setWords(words => {
+            const clonedWords = new Array<Word>();
+            for (var i = 0; i < words.length; i++) {
+                const word = words[i];
+                if (i === index) {
+                    const splitWords = word.token.split(WORD_DELIMITER).map(token => new Word(token, false));
+                    Array.prototype.push.apply(clonedWords, splitWords);
+                }
+                else {
+                    clonedWords.push(word);
+                }
+            }
+            return clonedWords;
+        });
+    }
 
     const getHighlightColors = (tagName?: string): HighlightColors | undefined => {
         if (tagName === undefined) {
@@ -88,7 +107,10 @@ export const TagBox = () => {
         return <Highlighter key={index}
             selected={word.selected || word.tag !== undefined}
             highlight={getHighlightColors(word.tag)}
-            onClick={word.tag === undefined ? () => wordClicked(index) : undefined}>
+            onClick={word.tag === undefined ? () => wordClicked(index) : undefined}
+            clearable={word.tag !== undefined}
+            onClearClicked={() => clearWord(index)}
+        >
             {word.token}
         </Highlighter>
     });

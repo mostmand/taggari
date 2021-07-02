@@ -1,5 +1,7 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { ClassNameMap } from '@material-ui/styles';
+import { useState } from 'react';
+import { ClearTagButton } from './ClearTagButton';
 
 export interface HighlightColors {
     backgroundColorDark: string;
@@ -12,6 +14,8 @@ interface Props {
     children?: React.ReactNode;
     selected: boolean;
     highlight?: HighlightColors;
+    clearable?: boolean;
+    onClearClicked?: () => void;
     onClick?: () => void;
 }
 
@@ -19,6 +23,8 @@ export const Highlighter = (props: Props) => {
     if (props.selected === true && props.highlight === null) {
         throw new Error('Selected is true but no highlight is defined');
     }
+
+    const [clearButtonVisibility, setClearButtonVisibility] = useState(false);
     const useStyles = makeStyles((theme: Theme) => createStyles({
         text: {
             marginLeft: '0.3rem',
@@ -42,13 +48,23 @@ export const Highlighter = (props: Props) => {
     const classes = useStyles(props);
     const style = getStyle(props.selected, classes);
 
-    return <span className={style} onClick={props.onClick}>
-        {props.children}
+    return <span>
+        <span className={style}
+            onClick={props.onClick}
+            onMouseEnter={!props.clearable ? undefined : () => setClearButtonVisibility(true)}
+            onMouseLeave={!props.clearable ? undefined : () => setClearButtonVisibility(false)}>
+            {props.children}
+
+            <ClearTagButton visible={clearButtonVisibility} onClick={() => {
+                setClearButtonVisibility(false);
+                props.onClearClicked?.();
+            }} />
+        </span>
     </span>
 }
 
 Highlighter.defaultProps = {
-    highlight:  {
+    highlight: {
         backgroundColorDark: 'teal',
         backgroundColorLight: 'teal',
         textColorDark: 'white',
