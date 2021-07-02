@@ -1,10 +1,11 @@
-import { Card, Container } from "@material-ui/core"
+import { Grid } from "@material-ui/core"
 import { useEffect, useState } from "react"
 import { HighlightColors, Highlighter } from "./Highlighter"
 import { TagDefinition } from "./TagDefinition";
 import { Tags } from "./Tags";
 import { Tag, TagSelector } from "./TagSelector";
 import { Word } from "./Word";
+import { TextArea } from "./TextArea";
 
 const WORD_DELIMITER = ' ';
 
@@ -22,7 +23,7 @@ export const TagBox = () => {
     useEffect(() => {
         let mounted = true;
         if (mounted) {
-            setWords(createWords('salam khoobi chetori'));
+            setWords(createWords('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'));
         }
         return () => {
             mounted = false
@@ -124,10 +125,21 @@ export const TagBox = () => {
             }
         };
     });
-    return <Container>
-        <TagSelector tags={tags}></TagSelector>
-        <Card variant='outlined'>
-            {highlighters}
-        </Card>
-    </Container>;
+    return <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+        spacing={2}
+    >
+        <Grid item xs={12}>
+            <TagSelector tags={tags}></TagSelector>
+        </Grid>
+
+        <Grid item xs={12}>
+            <TextArea>
+                {highlighters}
+            </TextArea>
+        </Grid>
+    </Grid>
 }

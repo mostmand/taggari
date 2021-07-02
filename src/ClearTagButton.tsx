@@ -1,4 +1,5 @@
-import ClearIcon from '@material-ui/icons/Clear';
+import { red } from '@material-ui/core/colors';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 interface Props {
     visible?: boolean;
@@ -10,7 +11,7 @@ export const ClearTagButton = (props: Props) => {
         return <></>;
     }
 
-    return <ClearIcon color="primary"
+    return <HighlightOffIcon style={{color: red[900]}}
         onClick={props.onClick}>
-    </ClearIcon>
+    </HighlightOffIcon>
 }
