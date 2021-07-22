@@ -13,7 +13,7 @@ export const TextArea = (props: Props) => {
   // }));
   // const classes = useStyles(props);
 
-  const children = props.children?.map(child => <Grid item>{child}</Grid>)
+  const children = props.children?.map((child, index) => <Grid key={index} item>{child}</Grid>)
 
   return <Paper>
     <Grid
@@ -22,7 +22,6 @@ export const TextArea = (props: Props) => {
       justify="flex-start"
       alignItems="center"
       wrap="wrap"
-      spacing={2}
     >
       {children}
     </Grid>

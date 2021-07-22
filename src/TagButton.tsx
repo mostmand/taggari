@@ -1,4 +1,5 @@
 import { Button, createStyles, makeStyles, Theme } from "@material-ui/core";
+import Color from "color";
 
 type Props = {
     buttonColor: string;
@@ -8,8 +9,11 @@ type Props = {
 export const TagButton = (props: Props) => {
     const useStyles = makeStyles((theme: Theme) => createStyles({
         button: {
-            backgroundColor: props.buttonColor
-        } 
+            backgroundColor: props.buttonColor,
+            "&:hover": {
+                backgroundColor: Color(props.buttonColor).alpha(0.7).string()
+            }
+        }
     }));
 
     const styles = useStyles(props);

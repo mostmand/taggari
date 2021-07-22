@@ -12,8 +12,8 @@ type Props = {
 }
 
 export const TagSelector = (props: Props) => {
-    const buttons = props.tags.map(tag => {
-        return <TagButton buttonColor={tag.buttonColor} onClick={tag.onClick}>{tag.name}</TagButton>
+    const buttons = props.tags.map((tag, index) => {
+        return <TagButton key={index} buttonColor={tag.buttonColor} onClick={tag.onClick}>{tag.name}</TagButton>
     });
     return <Card variant='outlined'>
         {buttons}
