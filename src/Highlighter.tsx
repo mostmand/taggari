@@ -1,10 +1,12 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { ClassNameMap } from '@material-ui/styles';
-import { MouseEventHandler, useState } from 'react';
-import Menu from '@material-ui/core/Menu';
+import { MouseEventHandler } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import Color from 'color';
+import { ClickAwayListener, MenuList, Paper, Popper, Zoom } from '@material-ui/core';
+import React from 'react';
+import { grey } from '@material-ui/core/colors';
 
 export interface HighlightColors {
     backgroundColorDark: string;
@@ -47,6 +49,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
             color: theme.palette.text.primary,
             backgroundColor: theme.palette.action.selected
         }
+    },
+    clearMenu: {
+        backgroundColor: theme.palette.type === "dark" ? grey[600] : "white"
     }
 }));
 
@@ -55,18 +60,23 @@ export const Highlighter = (props: Props) => {
         throw new Error('Selected is true but no highlight is defined');
     }
 
-    const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+    const [open, setOpen] = React.useState(false);
+    const anchorRef = React.useRef<HTMLButtonElement>(null);
 
     const handleClick: MouseEventHandler<HTMLSpanElement> = (event) => {
-        setAnchorEl(event.currentTarget);
+        setOpen((isOpen) => !isOpen);
     };
 
-    const handleClose = () => {
-        setAnchorEl(null);
+    const handleClose = (event: React.MouseEvent<EventTarget>) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+            return;
+        }
+
+        setOpen(false);
     };
 
     const clearTag = () => {
-        handleClose();
+        setOpen(false);
         props.onClearClicked?.();
     };
 
@@ -74,18 +84,29 @@ export const Highlighter = (props: Props) => {
     const style = getStyle(props.selected, classes);
 
     return <span>
-        <Button className={style} aria-controls="simple-menu" aria-haspopup="true" onClick={!props.clearable ? props.onClick : handleClick}>
+        <Button className={style} ref={anchorRef}
+            aria-controls={open ? 'clear-menu' : undefined}
+            aria-haspopup="true"
+            onClick={!props.clearable ? props.onClick : handleClick}>
             {props.children}
         </Button>
-        <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-        >
-            <MenuItem onClick={clearTag}>Clear</MenuItem>
-        </Menu>
+
+        <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition>
+            {({ TransitionProps, placement }) => (
+                <Zoom
+                    {...TransitionProps}
+                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                >
+                    <Paper className={classes.clearMenu}>
+                        <ClickAwayListener onClickAway={handleClose}>
+                            <MenuList autoFocusItem={open} id="clear-menu">
+                                <MenuItem onClick={clearTag}>Clear</MenuItem>
+                            </MenuList>
+                        </ClickAwayListener>
+                    </Paper>
+                </Zoom>
+            )}
+        </Popper>
     </span >
 }
 
