@@ -6,7 +6,7 @@ import { DarkModeToggle } from "./DarkModeToggle";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
-    backgroundColor: theme.palette.type === "dark" ? grey[800] : teal[700]
+    backgroundColor: theme.palette.type === "dark" ? grey[800] : teal[600]
   },
   title: {
     flexGrow: 1

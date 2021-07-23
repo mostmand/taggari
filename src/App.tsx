@@ -4,12 +4,12 @@ import { TagBox } from './TagBox';
 import { createMuiTheme, ThemeProvider, useMediaQuery, Box } from '@material-ui/core';
 import { TopBar } from './TopBar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { grey } from '@material-ui/core/colors';
+import { grey, teal } from '@material-ui/core/colors';
 
 const useGlobalStyles = (theme: Theme) => makeStyles({
   "@global": {
     body: {
-      backgroundColor: theme.palette.type === "dark" ? grey[800] : "#FFFFFF"
+      backgroundColor: theme.palette.type === "dark" ? grey[800] : teal[100]
     }
   }
 })();
