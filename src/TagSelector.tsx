@@ -1,4 +1,4 @@
-import { Card } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { TagButton } from "./TagButton";
 
 export interface Tag {
@@ -13,9 +13,21 @@ type Props = {
 
 export const TagSelector = (props: Props) => {
     const buttons = props.tags.map((tag, index) => {
-        return <TagButton key={index} buttonColor={tag.buttonColor} onClick={tag.onClick}>{tag.name}</TagButton>
+        return <Grid item>
+            <TagButton
+                key={index}
+                buttonColor={tag.buttonColor}
+                onClick={tag.onClick}>
+                {tag.name}
+            </TagButton>
+        </Grid>
     });
-    return <Card variant='outlined'>
+    return <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+        spacing={1}>
         {buttons}
-    </Card>;
+    </Grid>;
 }

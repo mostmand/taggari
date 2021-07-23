@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core"
+import { AppBar, Container, Paper, Toolbar } from "@material-ui/core"
 import { useEffect, useState } from "react"
 import { HighlightColors, Highlighter } from "./Highlighter"
 import { TagDefinition } from "./TagDefinition";
@@ -6,10 +6,25 @@ import { Tags } from "./Tags";
 import { Tag, TagSelector } from "./TagSelector";
 import { Word } from "./Word";
 import { TextArea } from "./TextArea";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { grey } from "@material-ui/core/colors";
+import { teal } from "@material-ui/core/colors";
+import { BottomBar } from "./BottomBar";
 
 const WORD_DELIMITER = ' ';
 
+const useStyles = makeStyles(theme => ({
+    tagBar: {
+        marginTop: "0.05rem",
+        backgroundColor: theme.palette.type === "dark" ? grey[800] : teal[400],
+        marginBottom: "0.5rem",
+    }
+}));
+
 export const TagBox = () => {
+    const classes = useStyles();
+
     const tagsByName = new Map<string, TagDefinition>();
     Tags.forEach(tag => tagsByName.set(tag.name, tag));
 
@@ -125,21 +140,25 @@ export const TagBox = () => {
             }
         };
     });
-    return <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-        spacing={2}
-    >
-        <Grid item xs={12}>
-            <TagSelector tags={tags}></TagSelector>
-        </Grid>
+    return <div>
+        <React.Fragment>
+            <AppBar
+                position="sticky"
+                className={classes.tagBar}
+            >
+                <Toolbar>
+                    <TagSelector tags={tags}></TagSelector>
+                </Toolbar>
+            </AppBar>
+        </React.Fragment>
 
-        <Grid item xs={12}>
-            <TextArea>
-                {highlighters}
-            </TextArea>
-        </Grid>
-    </Grid>
+        <Container>
+            <Paper>
+                <TextArea>
+                    {highlighters}
+                </TextArea>
+            </Paper>
+            <BottomBar />
+        </Container>
+    </div>;
 }
