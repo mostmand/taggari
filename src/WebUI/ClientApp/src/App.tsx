@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import './App.css';
-import {TagBox} from './TagBox';
 import {createMuiTheme, ThemeProvider, useMediaQuery, Box} from '@material-ui/core';
-import {TopBar} from './TopBar';
 import {makeStyles, Theme} from '@material-ui/core/styles';
 import {grey, teal} from '@material-ui/core/colors';
 import {Route} from "react-router-dom";
 import Home from "./Home";
+import {TopBar} from "./TopBar";
 
 const useGlobalStyles = (theme: Theme) => makeStyles({
     "@global": {
@@ -33,7 +32,10 @@ const App = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Route exact path='/' component={Home}/>
+            <Box>
+                <TopBar isDarkMode={isDarkMode} toggleDarkMode={() => setIsDarkMode((isDarkMode) => !isDarkMode)}/>
+                <Route exact path='/' component={Home}/>
+            </Box>
         </ThemeProvider>
     );
 };
